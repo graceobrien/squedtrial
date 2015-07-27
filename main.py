@@ -8,6 +8,15 @@ from google.appengine.api import users
 
 env = jinja2.Environment(loader = jinja2.FileSystemLoader('templates'))
 
+class Database(ndb.Model):
+    user = ndb.TextProperty()
+    name = ndb.TextProperty()
+    school = ndb.TextProperty()
+    age = ndb.IntegerProperty()
+    subject = ndb.StringProperty()
+    location = ndb.GeoPtProperty()
+    picture = ndb.BlobProperty()
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
 
