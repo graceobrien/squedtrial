@@ -36,22 +36,22 @@ class MapHandler(webapp2.RequestHandler):
         self.response.write(template.render())
 
 
-#class GmailHandler(webapp2.RequestHandler):
-#    def get(self):
-#        user = users.get_current_user()
-#        if user:
-#            greeting = ('Welcome, %s! (<a href="%s">sign out</a>)' %
-#                        (user.nickname(), users.create_logout_url('/home')))
-#        else:
-#            greeting = ('<a href="%s">Sign in or register</a>.' %
-#                        users.create_login_url('/home'))
+class GmailHandler(webapp2.RequestHandler):
+   def get(self):
+       user = users.get_current_user()
+       if user:
+           greeting = ('Welcome, %s! (<a href="%s">sign out</a>)' %
+                       (user.nickname(), users.create_logout_url('/home')))
+       else:
+           greeting = ('<a href="%s">Sign in or register</a>.' %
+                       users.create_login_url('/home'))
 
-#        self.response.out.write("<html><body>%s</body></html>" % greeting)
+       self.response.out.write("<html><body>%s</body></html>" % greeting)
 
 
 app = webapp2.WSGIApplication([
     ('/home', MainHandler),
     ('/profile', BlurryProfileHandler),
-    ('/map', MapHandler)
+    ('/map', MapHandler),
     ('/gmail', GmailHandler)
 ], debug=True)
