@@ -19,9 +19,19 @@ class Database(ndb.Model):
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
+         user =users.get_current_user()
+         template_var = {}
+         if user is None:
+             login_url = users.create_login_url('/map')
+            
+             template_var["login"] = login_url
 
+         else:
+             logout_url = users.create_logout_url('/home')
+             self.response.write('Welcome %s!' % user.email())
+             self.response.write('<a href = "%s"> Log Out </a>' % logout_url)
          template = env.get_template('home.html')
-         self.response.write(template.render())
+         self.response.write(template.render(template_var))
 
 
 class BlurryProfileHandler(webapp2.RequestHandler):
@@ -35,18 +45,18 @@ class MapHandler(webapp2.RequestHandler):
         template = env.get_template('map.html')
         self.response.write(template.render())
 
-
-class GmailHandler(webapp2.RequestHandler):
-   def get(self):
-       user = users.get_current_user()
-       if user:
-           greeting = ('Welcome, %s! (<a href="%s">sign out</a>)' %
-                       (user.nickname(), users.create_logout_url('/home')))
-       else:
-           greeting = ('<a href="%s">Sign in or register</a>.' %
-                       users.create_login_url('/map'))
-
-       self.response.out.write("<html><body>%s</body></html>" % greeting)
+#
+# class GmailHandler(webapp2.RequestHandler):
+#    def get(self):
+#        user = users.get_current_user()
+#        if user:
+#            greeting = ('Welcome, %s! (<a href="%s">sign out</a>)' %
+#                        (user.nickname(), users.create_logout_url('/home')))
+#        else:
+#            greeting = ('<a href="%s">Sign in or register</a>.' %
+#                        users.create_login_url('/map'))
+#
+#        self.response.out.write("<html><body>%s</body></html>" % greeting)
 
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
@@ -64,7 +74,7 @@ app = webapp2.WSGIApplication([
     ('/home', MainHandler),
     ('/profile', BlurryProfileHandler),
     ('/map', MapHandler),
-    ('/gmail', GmailHandler),
+    # ('/gmail', GmailHandler),
     ('/login', LoginHandler),
     ('/signup', SignUpHandler)
 ], debug=True)
