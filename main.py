@@ -44,14 +44,27 @@ class GmailHandler(webapp2.RequestHandler):
                        (user.nickname(), users.create_logout_url('/home')))
        else:
            greeting = ('<a href="%s">Sign in or register</a>.' %
-                       users.create_login_url('/home'))
+                       users.create_login_url('/map'))
 
        self.response.out.write("<html><body>%s</body></html>" % greeting)
+
+class LoginHandler(webapp2.RequestHandler):
+    def get(self):
+        template = env.get_template('login.html')
+        self.response.write(template.render())
+
+class SignUpHandler(webapp2.RequestHandler):
+    def get(self):
+        template = env.get_template('signup.html')
+        self.response.write(template.render())
+
 
 
 app = webapp2.WSGIApplication([
     ('/home', MainHandler),
     ('/profile', BlurryProfileHandler),
     ('/map', MapHandler),
-    ('/gmail', GmailHandler)
+    ('/gmail', GmailHandler),
+    ('/login', LoginHandler),
+    ('/signup', SignUpHandler)
 ], debug=True)
