@@ -25,6 +25,16 @@ img {
  position:left;
  width: 200px;
  height:70px;
- padding-right: 975px;
+ padding-right: 2000px;
  padding-top: 5px;
 }
+
+#map-canvas {
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+    height: 800px;
+    background-color: #CCC;
+
+  }
+  
