@@ -1,4 +1,5 @@
-
+from google.appengine.api import urlfetch
+from google.appengine.api import users
 import webapp2
 import jinja2
 from google.appengine.ext import ndb
@@ -15,7 +16,14 @@ class BlurryProfileHandler(webapp2.RequestHandler):
         template = env.get_template('blurryprofile.html')
         self.response.write(template.render())
 
+class MapHandler(webapp2.RequestHandler):
+    def get(self):
+        template = env.get_template('map.html')
+        self.response.write(template.render())
+
+
 app = webapp2.WSGIApplication([
     ('/home', MainHandler),
-    ('/blurryprofile', BlurryProfileHandler),
+    ('/profile', BlurryProfileHandler),
+    ('/map', MapHandler)
 ], debug=True)

@@ -1,0 +1,30 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:100,400,700,900);
+
+
+body {
+  font-family: 'Lato', sans-serif;
+  text-align: center;
+  background-color:#F5F5F5;
+  color: #212121;
+  margin: 0px;
+  background: url('https://d3ui957tjb5bqd.cloudfront.net/images/screenshots/products/29/294/294444/1-f.jpg?1420807091');
+}
+
+header {
+  background-color: #80DEEA;
+  margin-top: 0px;
+  height: 80px;
+  background-size: cover;
+  padding: 0px;
+  text-align: center;
+  border-radius: 0;
+   box-shadow: 0;
+}
+
+img {
+ position:left;
+ width: 200px;
+ height:70px;
+ padding-right: 975px;
+ padding-top: 5px;
+}

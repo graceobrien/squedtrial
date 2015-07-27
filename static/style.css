@@ -22,9 +22,13 @@ header {
 
 img {
  position:center;
- left:10px;
- top:10px;
+ width: 280px;
+ height:100px;
+ padding-bottom: 0px;
+ padding-top:20px;
+ margin-top: 0px;
 }
+
 
 h1 {
   padding-top:40px;
@@ -48,6 +52,8 @@ h3 {
   font-family: 'Lato', sans-serif;
   font-weight: 100;
   font-size: 30px;
+  padding-top: 0px;
+  margin-top: 0px;
 }
 
 p {
