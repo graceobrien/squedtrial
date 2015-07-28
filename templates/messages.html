@@ -1,0 +1,25 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>My Messages</title>
+	<link href="/static/profile.css" rel= "stylesheet">
+	<h1>Messages</h1>
+</head>
+
+<body>
+	{% for post in posts %}
+	<div class="bubble" style="background: pink; border-color: red;">{{post.content}}
+</div><br>
+	{% endfor %}
+
+ <br>
+
+
+
+
+   </div>
+   </div>
+</body>
+</html>

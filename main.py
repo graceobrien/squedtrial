@@ -3,8 +3,7 @@ from google.appengine.api import users
 import webapp2
 import jinja2
 from google.appengine.ext import ndb
-from google.appengine.api import urlfetch
-from google.appengine.api import users
+import datetime
 
 env = jinja2.Environment(loader = jinja2.FileSystemLoader('templates'))
 
@@ -12,6 +11,7 @@ class User(ndb.Model):
     user_property = ndb.UserProperty()
     firstname = ndb.TextProperty()
     lastname = ndb.TextProperty()
+    name = ndb.TextProperty()
     school = ndb.TextProperty()
     age = ndb.TextProperty()
     subject = ndb.StringProperty()
@@ -20,10 +20,10 @@ class User(ndb.Model):
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-         user = users.get_current_user()
+         user =users.get_current_user()
          template_var = {}
          if user is None:
-             login_url = users.create_login_url('/userinfo')
+             login_url = users.create_login_url('/map')
              template_var["login"] = login_url
          else:
              logout_url = users.create_logout_url('/home') #creates a logout url
@@ -36,11 +36,42 @@ class MainHandler(webapp2.RequestHandler):
          template = env.get_template('home.html')
          self.response.write(template.render(template_var))
 
-class BlurryProfileHandler(webapp2.RequestHandler):
+class ProfileHandler(webapp2.RequestHandler):
     def get(self):
         template = env.get_template('profile.html')
         self.response.write(template.render())
 
+
+
+class Message(ndb.Model):
+    content = ndb.TextProperty()
+
+class MessagesHandler(webapp2.RequestHandler):
+    def get(self):
+        post = Message.query().fetch()
+        variables = {'posts': post}
+        template = env.get_template('messages.html')
+        self.response.write(template.render(variables))
+
+    def post(self):
+        content = self.request.get('content')
+        post = Message(content = content)
+        post.put()
+        return self.redirect('/message')
+
+class PostHandler(webapp2.RequestHandler):
+    def get(self):
+        urlsafe_post_key = self.request.get('key')
+        post_key = ndb.Key(urlsafe = urlsafe_post_key)
+        post = post_key.get()
+        template = env.get_template('messages.html')
+        variables = {'post': post}
+        self.response.write(template.render(variables))
+    def post(self):
+        urlsafe_post_key = self.request.get('post_key')
+        content = self.request.get('content')
+        post_key = ndb.Key(urlsafe = urlsafe_post_key)
+        return self.redirect('/message?key=%s' & urlsafe_post_key)
 
 class MapHandler(webapp2.RequestHandler):
     def get(self):
@@ -90,17 +121,12 @@ class UserInfoHandler(webapp2.RequestHandler):
         user_entity.age = age
         user_entity.put()
 
-
-
-
-
 app = webapp2.WSGIApplication([
     ('/home', MainHandler),
-    ('/profile', BlurryProfileHandler),
+    ('/profile', ProfileHandler),
     ('/map', MapHandler),
+    ('/message', MessagesHandler),
+    ('/post', PostHandler),
     ('/login', LoginHandler),
-    ('/signup', SignUpHandler),
-    ('/facebook', FacebookHandler),
-    ('/userinfo', UserInfoHandler)
-
+    ('/signup', SignUpHandler)
 ], debug=True)
