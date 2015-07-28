@@ -1,0 +1,221 @@
+import url(http://fonts.googleapis.com/css?family=Lato:100,400,700,900);
+
+
+
+body {
+  font-family: 'Lato', sans-serif;
+  background-color:#F5F5F5;
+  color: #212121;
+  margin: 0px;
+  background: url('https://d3ui957tjb5bqd.cloudfront.net/images/screenshots/products/29/294/294444/1-f.jpg?1420807091');
+}
+
+header {
+    padding-top: 5px;
+    display: block;
+    background-color: #80DEEA;
+    text-align: middle;
+    height: 50px;
+}
+img {
+  height: 50px;
+}
+.A {
+  float:left;
+    width: 20%;
+    height: 100%;
+}
+.B {
+  float: left;
+    width: 50%;
+    height: 100%;
+}
+.C {
+  float: left;
+    width: 20%;
+    height: 100%;
+}
+.D {
+  float: left;
+    width: 5%;
+    height: 100%;
+}
+.E {
+  float: left;
+    width: 5%;
+    height: 100%;
+}
+
+
+form {
+                padding-top: 5px;
+                width:100%;
+}
+.search {
+                width: 70%;
+                height: 35px;
+                background:#fff;
+                border: none;
+                border-radius: 10px;
+}
+.button {
+
+                width: 20%;
+                height: 35px;
+                background-color: #000000;
+                color:#ffffff;
+                border: none;
+                border-radius: 10px;
+                font-family: 'Lato', sans-serif;
+                font-weight: 400;
+}
+.button:hover  {
+
+                color:#207cca;
+}
+
+
+@import "compass/css3";
+
+* {
+  @include box-sizing(border-box);
+}
+
+.block {
+  padding-top: 50px;
+  height: 600px;
+  margin: 0 auto;
+  width: 100%;
+  background: url(http://jeem.ir/files/images/user/1426505721jpeg) top right no-repeat;
+  background-size: cover;
+}
+
+.user {
+  height: 100%;
+  width: 280px;
+  position: relative;
+  text-align: center;
+  z-index: 1;
+  font-family: 'Lato', sans-serif;
+
+  &:before {
+    content: "";
+    display: block;
+    -webkit-filter: blur(4px);
+    -moz-filter: blur(4px);
+    filter: blur(4px);
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: -1;
+
+    // See comment in JS Panel
+    .cssreflections & {
+      background: url(https://lh4.googleusercontent.com/-MpYP8v5LFYk/UpwkFj09NjI/AAAAAAAAgv4/A4aegtvObzs/s652-fcrop64=1,169d09e6febdce7e/IMG_1272.jpg)  0 0 no-repeat;
+      background-size: cover;
+    }
+    .no-cssreflections & {
+      background: rgba(0,0,0,0.6);
+    }
+  }
+}
+
+.avatar {
+  border-radius: 80%;
+  margin-top: 20px;
+  width: 250px;
+  height: 250px;
+}
+
+.circle-button {
+  box-shadow: 0 2px 0px rgba(0,0,0,0.25);
+  @include transition(.3s all ease-in-out);
+  border-radius: 10px;
+  display: table;
+  height: 42px;
+  margin: 0 auto;
+  width: 200px;
+  vertical-align: middle;
+  font-size: 20px;
+  font-weight: 300;
+  background: #DC4836;
+  color: white;
+
+  &:hover {
+    box-shadow: inset 0 0 0 2px white;
+    cursor: pointer;
+    background: scale-lightness(#DC4836, 5%);
+  }
+
+  > div {
+    display: table-cell;
+    vertical-align: middle;
+  }
+}
+
+.usr-info {
+  margin-top: 20px;
+  font-weight: 100;
+}
+
+.icon {
+  font-family: 'Lato', sans-serif;
+  font-weight: 100;
+  margin-top: 5px;
+  font-size: 20px;
+}
+
+.Yia {
+  margin-bottom: 15px;
+}
+
+/*THIS IS NAME*/
+.Xia {
+  font-size: 40px;
+  color: white;
+}
+
+/*THIS IS WHERE THEY ARE STUDYING*/
+.Ny,
+.followers {
+  font-size: 14px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+/*NAVIGATION AT BOTTOM OF PROFILE*/
+.nav {
+  display: table;
+  height: 45px;
+  width: 100%;
+  text-align: center;
+  background: #DC4836;
+
+  > div {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  a {
+    vertical-align: bottom;
+    margin: 0 6px;
+    text-decoration: none;
+    color: white;
+    padding-bottom: 12px;
+
+    &:hover {
+      border-bottom: 4px solid white;
+    }
+  }
+  b {
+    color: scale-lightness(#DC4836, -40%);
+  }
+}
+
+.current-nav {
+  border-bottom: 4px solid white;
+}

@@ -3,38 +3,131 @@
 
 body {
   font-family: 'Lato', sans-serif;
-  text-align: center;
   background-color:#F5F5F5;
   color: #212121;
   margin: 0px;
-  background: url('https://d3ui957tjb5bqd.cloudfront.net/images/screenshots/products/29/294/294444/1-f.jpg?1420807091');
+  background-color: #fff;
 }
 
 header {
-  background-color: #80DEEA;
-  margin-top: 0px;
-  height: 80px;
-  background-size: cover;
-  padding: 0px;
-  text-align: center;
-  border-radius: 0;
-   box-shadow: 0;
+    padding-top: 5px;
+    display: block;
+    background-color: #80DEEA;
+    text-align: middle;
+    height: 50px;
+    font-family: 'Lato', sans-serif;
+    font=width: 100; 
+}
+img {
+  height: 50px;
+}
+.A {
+  float:left;
+    width: 20%;
+    height: 100%;
+}
+.B {
+  float: left;
+    width: 50%;
+    height: 100%;
+}
+.C {
+  float: left;
+    width: 20%;
+    height: 100%;
+}
+.D {
+  float: left;
+    width: 5%;
+    height: 100%;
+}
+.E {
+  float: left;
+    width: 5%;
+    height: 100%;
 }
 
-img {
- position:left;
- width: 200px;
- height:70px;
- padding-right: 2000px;
- padding-top: 5px;
+
+form {
+                padding-top: 5px;
+                width:100%;
+}
+.search {
+                width: 70%;
+                height: 35px;
+                background:#fff;
+                border: none;
+                border-radius: 10px;
+}
+.button {
+
+                width: 20%;
+                height: 35px;
+                background-color: #000000;
+                color:#ffffff;
+                border: none;
+                border-radius: 10px;
+                font-family: 'Lato', sans-serif;
+                font-weight: 400;
+}
+.button:hover  {
+
+                color:#207cca;
 }
 
 #map-canvas {
     margin-left: auto;
     margin-right: auto;
-    width: 800px;
+    width: 1000px;
     height: 800px;
     background-color: #CCC;
-
   }
-  
+
+
+  .onoffswitch {
+      margin-left: 20px;
+      margin-top: 10px;
+      position: relative; width: 191px;
+      -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+  }
+  .onoffswitch-checkbox {
+      display: none;
+  }
+  .onoffswitch-label {
+      display: block; overflow: hidden; cursor: pointer;
+      border: 2px solid #999999; border-radius: 30px;
+  }
+  .onoffswitch-inner {
+      display: block; width: 200%; margin-left: -100%;
+      transition: margin 0.3s ease-in 0s;
+  }
+  .onoffswitch-inner:before, .onoffswitch-inner:after {
+      display: block; float: left; width: 50%; height: 29px; padding: 0; line-height: 29px;
+      font-size: 17px; color: white; font-family: 'Lato', sans-serif; font-weight: 400;
+      box-sizing: border-box;
+  }
+  .onoffswitch-inner:before {
+      content: "My location ON";
+      padding-left: 10px;
+      background-color: #F44336; color: #FFFFFF;
+  }
+  .onoffswitch-inner:after {
+      content: "My Location OFF";
+      padding-right: 10px;
+      background-color: #EEEEEE; color: #999999;
+      text-align: right;
+  }
+  .onoffswitch-switch {
+      display: block; width: 23px; margin: 3px;
+      background: #FFFFFF;
+      position: absolute; top: 0; bottom: 0;
+      right: 158px;
+      border: 2px solid #999999; border-radius: 30px;
+      transition: all 0.3s ease-in 0s;
+  }
+  .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+      margin-left: 0;
+  }
+  .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+      right: 0px;
+  }

@@ -1,19 +1,101 @@
 @import url(http://fonts.googleapis.com/css?family=Lato:100,400,700,900);
 
 
-body {
-
-	  background-color:#80DEEA;
+/*body {
+	  background-color:#F5F5F5;
 	  color: #212121;
 	  font-family: 'Lato', sans-serif;
 	  font-weight: 400;
 	  line-height: 1;
 	  text-align: center;
+}*/
+header {
+    padding-top: 5px;
+    display: block;
+    background-color: #80DEEA;
+    text-align: middle;
+    height: 50px;
 }
+img {
+  height: 50px;
+}
+.A {
+  float:left;
+    width: 20%;
+    height: 100%;
+}
+.B {
+  float: left;
+    width: 50%;
+    height: 100%;
+}
+.C {
+  float: left;
+    width: 20%;
+    height: 100%;
+}
+.D {
+  float: left;
+    width: 5%;
+    height: 100%;
+}
+.E {
+  float: left;
+    width: 5%;
+    height: 100%;
+}
+
+
+form {
+                padding-top: 5px;
+                width:100%;
+}
+.search {
+                width: 70%;
+                height: 35px;
+                background:#fff;
+                border: none;
+                border-radius: 10px;
+}
+.button {
+
+                width: 20%;
+                height: 35px;
+                background-color: #000000;
+                color:#ffffff;
+                border: none;
+                border-radius: 10px;
+                font-family: 'Lato', sans-serif;
+                font-weight: 400;
+}
+.button:hover  {
+
+                color:#207cca;
+
+
+header {
+	width: 2000px;
+  background-color: #80DEEA;
+  margin-top: 0px;
+  height: 80px;
+  background-size: cover;
+  padding: 0px;
+  text-align: center;
+  border-radius: 0;
+   box-shadow: 0;
+}
+
+img {
+ position:left;
+ width: 200px;
+ height:70px;
+ padding-right: 3000px;
+ padding-top: 5px;
+}*/
 
 .wrap {
   max-width: 1000px;
-  min-height: 450px;
+  min-height: 500px;
   max-height: 450px;
   margin: 100px auto;
   border-radius: 3px;
@@ -135,7 +217,7 @@ a.active:after {
 .footer {
   bottom: 0;
   width: 880px;
-  margin-bottom: 30px; 
+  margin-bottom: 30px;
   min-height: 100px;
   border-top: 1px solid #9E9AAB;
 	text-align: center;
@@ -169,4 +251,4 @@ a.active:after {
 .skills.open {
   display: block;
 }
-/*skill bar*/
+/*skill bar
