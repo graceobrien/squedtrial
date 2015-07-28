@@ -23,7 +23,7 @@ class MainHandler(webapp2.RequestHandler):
          template_var = {}
          if user is None:
              login_url = users.create_login_url('/map')
-            
+
              template_var["login"] = login_url
 
          else:
@@ -45,19 +45,6 @@ class MapHandler(webapp2.RequestHandler):
         template = env.get_template('map.html')
         self.response.write(template.render())
 
-#
-# class GmailHandler(webapp2.RequestHandler):
-#    def get(self):
-#        user = users.get_current_user()
-#        if user:
-#            greeting = ('Welcome, %s! (<a href="%s">sign out</a>)' %
-#                        (user.nickname(), users.create_logout_url('/home')))
-#        else:
-#            greeting = ('<a href="%s">Sign in or register</a>.' %
-#                        users.create_login_url('/map'))
-#
-#        self.response.out.write("<html><body>%s</body></html>" % greeting)
-
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
         template = env.get_template('login.html')
@@ -68,13 +55,18 @@ class SignUpHandler(webapp2.RequestHandler):
         template = env.get_template('signup.html')
         self.response.write(template.render())
 
+class FacebookHandler(webapp2.RequestHandler):
+    def get(self):
+        template = env.get_template('facebook.html')
+        self.response.write(template.render())
+
 
 
 app = webapp2.WSGIApplication([
     ('/home', MainHandler),
     ('/profile', BlurryProfileHandler),
     ('/map', MapHandler),
-    # ('/gmail', GmailHandler),
     ('/login', LoginHandler),
-    ('/signup', SignUpHandler)
+    ('/signup', SignUpHandler),
+    ('/facebook', FacebookHandler)
 ], debug=True)
