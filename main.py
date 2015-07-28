@@ -36,9 +36,9 @@ class MainHandler(webapp2.RequestHandler):
          template = env.get_template('home.html')
          self.response.write(template.render(template_var))
 
-class BlurryProfileHandler(webapp2.RequestHandler):
+class ProfileHandler(webapp2.RequestHandler):
     def get(self):
-        template = env.get_template('blurryprofile.html')
+        template = env.get_template('profile.html')
         self.response.write(template.render())
 
 
@@ -88,9 +88,23 @@ class SignUpHandler(webapp2.RequestHandler):
         template = env.get_template('signup.html')
         self.response.write(template.render())
 
+class FacebookHandler(webapp2.RequestHandler):
+    def get(self):
+        template = env.get_template('facebook.html')
+        self.response.write(template.render())
+
+# class UserInfoHandler(webapp2.RequestHandler):
+#     def get(self):
+#         template = env.get_template('userinfo.html')
+#         self.response.write(template.render())
+#
+#     def post(self):
+#         template =
+
+
 app = webapp2.WSGIApplication([
     ('/home', MainHandler),
-    ('/profile', BlurryProfileHandler),
+    ('/profile', ProfileHandler),
     ('/map', MapHandler),
     ('/message', MessagesHandler),
     ('/post', PostHandler),
