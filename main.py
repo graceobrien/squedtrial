@@ -17,13 +17,6 @@ class User(ndb.Model):
     location = ndb.GeoPtProperty()
     picture = ndb.BlobProperty()
 
-<<<<<<< Updated upstream
-=======
-class User(ndb.Model):
-    user_property = ndb.UserProperty()
-
-
->>>>>>> Stashed changes
 class MainHandler(webapp2.RequestHandler):
     def get(self):
          user = users.get_current_user()
@@ -73,7 +66,8 @@ class UserInfoHandler(webapp2.RequestHandler):
         template = env.get_template('userinfo.html')
         self.response.write(template.render())
 
-    # def post(self):
+    def post(self):
+        template = 
 
 
 app = webapp2.WSGIApplication([
