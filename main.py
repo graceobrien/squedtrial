@@ -17,6 +17,13 @@ class User(ndb.Model):
     location = ndb.GeoPtProperty()
     picture = ndb.BlobProperty()
 
+<<<<<<< Updated upstream
+=======
+class User(ndb.Model):
+    user_property = ndb.UserProperty()
+
+
+>>>>>>> Stashed changes
 class MainHandler(webapp2.RequestHandler):
     def get(self):
          user = users.get_current_user()

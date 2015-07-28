@@ -170,52 +170,44 @@ form {
 }
 
 .Yia {
-  margin-bottom: 15px;
+  margin-bottom: 24px;
 }
 
 /*THIS IS NAME*/
 .Xia {
-  font-size: 40px;
+  font-size: 35px;
   color: white;
 }
 
 /*THIS IS WHERE THEY ARE STUDYING*/
 .Ny,
 .followers {
-  font-size: 14px;
+  font-size: 20px;
   color: white;
   margin-bottom: 10px;
 }
 
 /*NAVIGATION AT BOTTOM OF PROFILE*/
 .nav {
+  /*font-size: 50px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 100;*/
+  color: #fff;
   display: table;
-  height: 45px;
+  height: 60px;
   width: 100%;
   text-align: center;
   background: #DC4836;
+
+
 
   > div {
     display: table-cell;
     vertical-align: middle;
   }
 
-  a {
-    vertical-align: bottom;
-    margin: 0 6px;
-    text-decoration: none;
-    color: white;
-    padding-bottom: 12px;
-
-    &:hover {
-      border-bottom: 4px solid white;
-    }
-  }
-  b {
-    color: scale-lightness(#DC4836, -40%);
-  }
-}
-
-.current-nav {
-  border-bottom: 4px solid white;
+.bio {
+  font-size: 50px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 100;
 }
