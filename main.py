@@ -10,9 +10,10 @@ env = jinja2.Environment(loader = jinja2.FileSystemLoader('templates'))
 
 class User(ndb.Model):
     user_property = ndb.UserProperty()
-    name = ndb.TextProperty()
+    firstname = ndb.TextProperty()
+    lastname = ndb.TextProperty()
     school = ndb.TextProperty()
-    age = ndb.IntegerProperty()
+    age = ndb.TextProperty()
     subject = ndb.StringProperty()
     location = ndb.GeoPtProperty()
     picture = ndb.BlobProperty()
@@ -67,7 +68,30 @@ class UserInfoHandler(webapp2.RequestHandler):
         self.response.write(template.render())
 
     def post(self):
-        template = 
+        firstname = self.request.get("firstname")
+        lastname = self.request.get("lastname")
+        school = self.request.get("school")
+        age = self.request.get("age")
+        user = users.get_current_user()
+
+        user_entity = User.query(User.user_property == user).get()
+        user_entity.firstname = firstname
+        user_entity.put()
+
+        user_entity = User.query(User.user_property == user).get()
+        user_entity.lastname = lastname
+        user_entity.put()
+
+        user_entity = User.query(User.user_property == user).get()
+        user_entity.school = school
+        user_entity.put()
+
+        user_entity = User.query(User.user_property == user).get()
+        user_entity.age = age
+        user_entity.put()
+
+
+
 
 
 app = webapp2.WSGIApplication([
