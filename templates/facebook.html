@@ -85,7 +85,11 @@
         'Thanks for logging in, ' + response.name + '!';
     });
   }
+    FB.api('/me', function(response) {
+      alert(JSON.stringify(response));
+    });
 </script>
+
 
 <!--
   Below we include the Login Button social plugin. This button uses

@@ -8,7 +8,8 @@ from google.appengine.api import users
 
 env = jinja2.Environment(loader = jinja2.FileSystemLoader('templates'))
 
-class Database(ndb.Model):
+class User(ndb.Model):
+    user_property = ndb.UserProperty()
     name = ndb.TextProperty()
     school = ndb.TextProperty()
     age = ndb.IntegerProperty()
@@ -16,15 +17,12 @@ class Database(ndb.Model):
     location = ndb.GeoPtProperty()
     picture = ndb.BlobProperty()
 
-class User(ndb.Model):
-    user_property = ndb.UserProperty()
-
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-         user =users.get_current_user()
+         user = users.get_current_user()
          template_var = {}
          if user is None:
-             login_url = users.create_login_url('/map')
+             login_url = users.create_login_url('/userinfo')
              template_var["login"] = login_url
          else:
              logout_url = users.create_logout_url('/home') #creates a logout url
@@ -62,7 +60,14 @@ class FacebookHandler(webapp2.RequestHandler):
     def get(self):
         template = env.get_template('facebook.html')
         self.response.write(template.render())
-        self.response.out.write("<html><body>%s</body></html>" % greeting)
+
+class UserInfoHandler(webapp2.RequestHandler):
+    def get(self):
+        template = env.get_template('userinfo.html')
+        self.response.write(template.render())
+
+    # def post(self):
+
 
 app = webapp2.WSGIApplication([
     ('/home', MainHandler),
@@ -70,6 +75,7 @@ app = webapp2.WSGIApplication([
     ('/map', MapHandler),
     ('/login', LoginHandler),
     ('/signup', SignUpHandler),
-    ('/facebook', FacebookHandler)
+    ('/facebook', FacebookHandler),
+    ('/userinfo', UserInfoHandler)
 
 ], debug=True)
