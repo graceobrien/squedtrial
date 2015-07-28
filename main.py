@@ -9,7 +9,6 @@ from google.appengine.api import users
 env = jinja2.Environment(loader = jinja2.FileSystemLoader('templates'))
 
 class Database(ndb.Model):
-    user = ndb.TextProperty()
     name = ndb.TextProperty()
     school = ndb.TextProperty()
     age = ndb.IntegerProperty()
@@ -17,19 +16,24 @@ class Database(ndb.Model):
     location = ndb.GeoPtProperty()
     picture = ndb.BlobProperty()
 
+class User(ndb.Model):
+    user_property = ndb.UserProperty()
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
          user =users.get_current_user()
          template_var = {}
          if user is None:
              login_url = users.create_login_url('/map')
-
              template_var["login"] = login_url
-
          else:
-             logout_url = users.create_logout_url('/home')
+             logout_url = users.create_logout_url('/home') #creates a logout url
              self.response.write('Welcome %s!' % user.email())
              self.response.write('<a href = "%s"> Log Out </a>' % logout_url)
+             if len(User.query(User.user_property == user).fetch()) == 0:
+                new_user = User(user_property = user)
+                new_user.put()
+
          template = env.get_template('home.html')
          self.response.write(template.render(template_var))
 
