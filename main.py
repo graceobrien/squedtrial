@@ -11,7 +11,6 @@ class User(ndb.Model):
     user_property = ndb.UserProperty()
     firstname = ndb.TextProperty()
     lastname = ndb.TextProperty()
-    name = ndb.TextProperty()
     school = ndb.TextProperty()
     age = ndb.TextProperty()
     subject = ndb.StringProperty()
@@ -23,7 +22,7 @@ class MainHandler(webapp2.RequestHandler):
          user =users.get_current_user()
          template_var = {}
          if user is None:
-             login_url = users.create_login_url('/map')
+             login_url = users.create_login_url('/userinfo')
              template_var["login"] = login_url
          else:
              logout_url = users.create_logout_url('/home') #creates a logout url
@@ -128,5 +127,6 @@ app = webapp2.WSGIApplication([
     ('/message', MessagesHandler),
     ('/post', PostHandler),
     ('/login', LoginHandler),
-    ('/signup', SignUpHandler)
+    ('/signup', SignUpHandler),
+    ('/userinfo', UserInfoHandler)
 ], debug=True)
