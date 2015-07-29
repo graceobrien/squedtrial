@@ -14,7 +14,7 @@ class User(ndb.Model):
     school = ndb.TextProperty()
     age = ndb.TextProperty()
     subject = ndb.StringProperty()
-    location = ndb.GeoPtProperty()
+    latlng = ndb.GeoPtProperty()
     profile = ndb.BlobProperty()
 
 class MainHandler(webapp2.RequestHandler):
@@ -44,20 +44,21 @@ class ProfileHandler(webapp2.RequestHandler):
 
 class Message(ndb.Model):
     content = ndb.TextProperty()
+    user = ndb.KeyProperty()
 
 class MessagesHandler(webapp2.RequestHandler):
     def get(self):
-        post = Message.query().fetch()
+        post = Message.query(Message.user == ndb.Key(User, users.get_current_user().user_id())).fetch()
         variables = {'posts': post}
         template = env.get_template('messages.html')
         self.response.write(template.render(variables))
 
     def post(self):
         content = self.request.get('content')
-        post = Message(content = content)
+        post = Message(content = content,
+                        user = ndb.Key(User, users.get_current_user().user_id()))
         post.put()
         return self.redirect('/message')
-
 class PostHandler(webapp2.RequestHandler):
     def get(self):
         urlsafe_post_key = self.request.get('key')
@@ -103,27 +104,8 @@ class UserInfoHandler(webapp2.RequestHandler):
         school = self.request.get("school")
         age = self.request.get("age")
         profile = self.request.get("profile")
+        location = self.request.get("location")
         user = users.get_current_user()
-
-        user_entity = User.query(User.user_property == user).get()
-        user_entity.firstname = firstname
-        user_entity.put()
-
-        user_entity = User.query(User.user_property == user).get()
-        user_entity.lastname = lastname
-        user_entity.put()
-
-        user_entity = User.query(User.user_property == user).get()
-        user_entity.school = school
-        user_entity.put()
-
-        user_entity = User.query(User.user_property == user).get()
-        user_entity.age = age
-        user_entity.put()
-
-        user_entity = User.query(User.user_property == user).get()
-        user_entity.profile = profile
-        user_entity.put()
 
 app = webapp2.WSGIApplication([
     ('/home', MainHandler),

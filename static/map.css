@@ -27,7 +27,7 @@ img {
 }
 .B {
   float: left;
-    width: 50%;
+    width: 45%;
     height: 100%;
 }
 .C {
@@ -42,6 +42,11 @@ img {
 }
 .E {
   float: left;
+    width: 5%;
+    height: 100%;
+}
+.F {
+   float: left;
     width: 5%;
     height: 100%;
 }

@@ -1,6 +1,7 @@
 var latitude=0;
 var longitude=0;
 var map = null;
+var on = false;
 
 function getUserLocation() {
 //check if the geolocation object is supported, if so get position
@@ -64,16 +65,24 @@ function initialize(position) {
 }
 google.maps.event.addDomListener(window, 'load', function (event) { navigator.geolocation.getCurrentPosition(initialize, displayError) } );
 
+
 function userdot() {
-	map.data.addGeoJson({
-  "type": "Feature",
-  "geometry": {
-  "type": "Point",
-  "coordinates": [longitude, latitude]},
-  "properties": {
-  "name": "Something"}
-});
-	map.data.addListener('click', function(event) {
-	    window.location = "/profile"
-	  });
+	if (on == false) {
+				var i = map.data.addGeoJson({
+			  "type": "Feature",
+			  "geometry": {
+			  "type": "Point",
+			  "coordinates": [longitude, latitude]},
+			  "properties": {
+			  "name": "Something"}
+			   });
+				map.data.addListener('click', function(event) {
+				    window.location = "/profile"
+				});
+				on = true;
+		}
+		else {
+		i.setMap(null)
+			 on = false;
+	}
 }

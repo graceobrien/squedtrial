@@ -1,3 +1,87 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:100,400,700,900);
+
+body {
+  font-family: 'Lato', sans-serif;
+  background-color:#F5F5F5;
+  color: #212121;
+  margin: 0px;
+  background-color: #fff;
+}
+
+header {
+    padding-top: 5px;
+    display: block;
+    background-color: #80DEEA;
+    text-align: middle;
+    height: 50px;
+    font-family: 'Lato', sans-serif;
+    font=width: 100;
+}
+img {
+  height: 50px;
+}
+.A {
+  float:left;
+    width: 20%;
+    height: 100%;
+}
+.B {
+  float: left;
+    width: 45%;
+    height: 100%;
+}
+.C {
+  float: left;
+    width: 20%;
+    height: 100%;
+}
+.D {
+  float: left;
+    width: 5%;
+    height: 100%;
+}
+.E {
+  float: left;
+    width: 5%;
+    height: 100%;
+}
+.F {
+   float: left;
+    width: 5%;
+    height: 100%;
+}
+
+
+form {
+                padding-top: 5px;
+                width:100%;
+}
+.search {
+                width: 70%;
+                height: 35px;
+                background:#fff;
+                border: none;
+                border-radius: 10px;
+}
+.button {
+
+                width: 20%;
+                height: 35px;
+                background-color: #000000;
+                color:#ffffff;
+                border: none;
+                border-radius: 10px;
+                font-family: 'Lato', sans-serif;
+                font-weight: 400;
+}
+.button:hover  {
+
+                color:#207cca;
+}
+
+
+
+
 .bubble {
     margin: 50px;
     padding: 50px;
