@@ -15,7 +15,7 @@ class User(ndb.Model):
     age = ndb.TextProperty()
     subject = ndb.StringProperty()
     location = ndb.GeoPtProperty()
-    picture = ndb.BlobProperty()
+    profile = ndb.BlobProperty()
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -102,6 +102,7 @@ class UserInfoHandler(webapp2.RequestHandler):
         lastname = self.request.get("lastname")
         school = self.request.get("school")
         age = self.request.get("age")
+        profile = self.request.get("profile")
         user = users.get_current_user()
 
         user_entity = User.query(User.user_property == user).get()
@@ -118,6 +119,10 @@ class UserInfoHandler(webapp2.RequestHandler):
 
         user_entity = User.query(User.user_property == user).get()
         user_entity.age = age
+        user_entity.put()
+
+        user_entity = User.query(User.user_property == user).get()
+        user_entity.profile = profile
         user_entity.put()
 
 app = webapp2.WSGIApplication([
