@@ -16,10 +16,16 @@ class User(ndb.Model):
     subject = ndb.StringProperty()
     latlng = ndb.GeoPtProperty()
     profile = ndb.BlobProperty()
+    background = ndb.BlobProperty()
 
 class Message(ndb.Model):
+    # post = ndb.KeyProperty(kind = User.user_property)
     content = ndb.TextProperty()
-    user = ndb.KeyProperty()
+    # user = ndb.KeyProperty()
+
+    # class Redirect(webapp2.RequestHandler):
+    #     def post(self):
+    #         self.redirect('/home')
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -41,6 +47,7 @@ class MainHandler(webapp2.RequestHandler):
 
 class ProfileHandler(webapp2.RequestHandler):
     def get(self):
+        # User.query(User.user_entity == ).fetch
         template = env.get_template('profile.html')
         self.response.write(template.render())
 
@@ -57,6 +64,7 @@ class MessagesHandler(webapp2.RequestHandler):
                         user = ndb.Key(User, users.get_current_user().user_id()))
         post.put()
         return self.redirect('/message')
+
 class PostHandler(webapp2.RequestHandler):
     def get(self):
         urlsafe_post_key = self.request.get('key')
@@ -86,15 +94,22 @@ class SignUpHandler(webapp2.RequestHandler):
         template = env.get_template('signup.html')
         self.response.write(template.render())
 
-class FacebookHandler(webapp2.RequestHandler):
-    def get(self):
-        template = env.get_template('facebook.html')
-        self.response.write(template.render())
-
 class UserInfoHandler(webapp2.RequestHandler):
     def get(self):
+        # user_entity_key_urlsafe = self.request.get('key')
+        # user_entity_key = ndb.Key(urlsafe = user_entity_key_urlsafe)
+        # user_entity = user_entity_key.get()
+        #
+        # \User.query( ).fetch()
+
+        variables = {'firstname': firstname,
+                     'lastname' : lastname,
+                     'age': age,
+                     'school': school}
+
         template = env.get_template('userinfo.html')
-        self.response.write(template.render())
+
+        self.response.write(template.render(variables))
 
     def post(self):
         firstname = self.request.get("firstname")
@@ -102,17 +117,22 @@ class UserInfoHandler(webapp2.RequestHandler):
         school = self.request.get("school")
         age = self.request.get("age")
         profile = self.request.get("profile")
+
         user = users.get_current_user()
 
         user_entity = User.query(User.user_property == user).get()
-        user_entity = User(firstname = firstname,
-                       lastname = lastname,
-                       school = school,
-                       age = age,
-                       profile = profile)
+        user_entity.firstname = firstname
+        user_entity.lastname = lastname
+        user_entity.school = school
+        user_entity.age = age
+        user_entity.profile = profile
+
         user_entity.put()
 
+        self.redirect('/profile?user=' + user_entity.key.urlsafe())
+
 app = webapp2.WSGIApplication([
+    # ('/', Redirect),
     ('/home', MainHandler),
     ('/profile', ProfileHandler),
     ('/map', MapHandler),
