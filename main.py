@@ -11,6 +11,7 @@ class User(ndb.Model):
     user_property = ndb.UserProperty()
     firstname = ndb.TextProperty()
     lastname = ndb.TextProperty()
+    name = ndb.TextProperty()
     school = ndb.TextProperty()
     age = ndb.TextProperty()
     subject = ndb.StringProperty()
@@ -22,7 +23,7 @@ class MainHandler(webapp2.RequestHandler):
          user =users.get_current_user()
          template_var = {}
          if user is None:
-             login_url = users.create_login_url('/userinfo')
+             login_url = users.create_login_url('/map')
              template_var["login"] = login_url
          else:
              logout_url = users.create_logout_url('/home') #creates a logout url
@@ -44,20 +45,21 @@ class ProfileHandler(webapp2.RequestHandler):
 
 class Message(ndb.Model):
     content = ndb.TextProperty()
+    user = ndb.KeyProperty()
 
 class MessagesHandler(webapp2.RequestHandler):
     def get(self):
-        post = Message.query().fetch()
+        post = Message.query(Message.user == ndb.Key(User, users.get_current_user().user_id())).fetch()
         variables = {'posts': post}
         template = env.get_template('messages.html')
         self.response.write(template.render(variables))
 
     def post(self):
         content = self.request.get('content')
-        post = Message(content = content)
+        post = Message(content = content,
+                        user = ndb.Key(User, users.get_current_user().user_id()))
         post.put()
         return self.redirect('/message')
-
 class PostHandler(webapp2.RequestHandler):
     def get(self):
         urlsafe_post_key = self.request.get('key')
@@ -132,6 +134,5 @@ app = webapp2.WSGIApplication([
     ('/message', MessagesHandler),
     ('/post', PostHandler),
     ('/login', LoginHandler),
-    ('/signup', SignUpHandler),
-    ('/userinfo', UserInfoHandler)
+    ('/signup', SignUpHandler)
 ], debug=True)
