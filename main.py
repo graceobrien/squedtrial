@@ -102,9 +102,7 @@ class UserInfoHandler(webapp2.RequestHandler):
         school = self.request.get("school")
         age = self.request.get("age")
         profile = self.request.get("profile")
-        location = self.request.get("location")
-        user = users.get_current_user()
-
+        
 app = webapp2.WSGIApplication([
     ('/home', MainHandler),
     ('/profile', ProfileHandler),
