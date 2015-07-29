@@ -1,3 +1,6 @@
+var latitude=0;
+var longitude=0;
+var map = null;
 
 function getUserLocation() {
 //check if the geolocation object is supported, if so get position
@@ -37,36 +40,40 @@ default:
 //DISPLAY THE LOCATIOn
 function displayLocation(position) {
 
-//build text string including co-ordinate data passed in parameter
-var displayText = "User latitude is " + position.coords.latitude + " and longitude is " + position.coords.longitude;
+		//build text string including co-ordinate data passed in parameter
+		var displayText = "User latitude is " + position.coords.latitude + " and longitude is " + position.coords.longitude;
 
-//display the string for demonstration
-document.getElementById("locationData").innerHTML = displayText;
-initialize (position);
+		//display the string for demonstration
+		document.getElementById("locationData").innerHTML = displayText;
+		initialize (position);
 }
 
 function initialize(position) {
-
   if (position) {
     latitude = position.coords.latitude;
-    longitutde = position.coords.longitude;
+    longitude = position.coords.longitude;
   }
-  else {
-    latitude = 0;
-    longitutde = 0;
+  var mapCanvas = document.getElementById('map-canvas');
+  var mapOptions = {
+    center: new google.maps.LatLng(latitude, longitude),
+    zoom: 14,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
   }
-          var mapCanvas = document.getElementById('map-canvas');
-          var mapOptions = {
-            center: new google.maps.LatLng(latitude, longitutde),
-            zoom: 12,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-          }
-          var map = new google.maps.Map(mapCanvas, mapOptions);
-
-          var displayjson = JSON.stringify(position);
-          document.getElementById("locationData").innerHTML = displayjson;
-//ADD CURRENT USERS' DOT TO THE MAP
-        map.data.addGeoJson(JSON.stringify(position));
+  map = new google.maps.Map(mapCanvas, mapOptions);
 
 }
-google.maps.event.addDomListener(window, 'load', initialize);
+google.maps.event.addDomListener(window, 'load', function (event) { navigator.geolocation.getCurrentPosition(initialize, displayError) } );
+
+function userdot() {
+	map.data.addGeoJson({
+  "type": "Feature",
+  "geometry": {
+  "type": "Point",
+  "coordinates": [longitude, latitude]},
+  "properties": {
+  "name": "Something"}
+});
+	map.data.addListener('click', function(event) {
+	    window.location = "/profile"
+	  });
+}

@@ -7,16 +7,14 @@ import datetime
 
 env = jinja2.Environment(loader = jinja2.FileSystemLoader('templates'))
 
-class Database(ndb.Model):
+class User(ndb.Model):
+    user_property= ndb.UserProperty()
     name = ndb.TextProperty()
     school = ndb.TextProperty()
     age = ndb.IntegerProperty()
     subject = ndb.StringProperty()
     location = ndb.GeoPtProperty()
     picture = ndb.BlobProperty()
-
-class User(ndb.Model):
-    user_property = ndb.UserProperty()
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -92,15 +90,6 @@ class FacebookHandler(webapp2.RequestHandler):
     def get(self):
         template = env.get_template('facebook.html')
         self.response.write(template.render())
-
-# class UserInfoHandler(webapp2.RequestHandler):
-#     def get(self):
-#         template = env.get_template('userinfo.html')
-#         self.response.write(template.render())
-#
-#     def post(self):
-#         template =
-
 
 app = webapp2.WSGIApplication([
     ('/home', MainHandler),
