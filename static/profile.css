@@ -1,13 +1,11 @@
 import url(http://fonts.googleapis.com/css?family=Lato:100,400,700,900);
 
-
-
 body {
   font-family: 'Lato', sans-serif;
   background-color:#F5F5F5;
   color: #212121;
   margin: 0px;
-  background: url('https://d3ui957tjb5bqd.cloudfront.net/images/screenshots/products/29/294/294444/1-f.jpg?1420807091');
+  background: url("https://d3ui957tjb5bqd.cloudfront.net/images/screenshots/products/29/294/294444/1-f.jpg?1420807091");
 }
 
 header {
