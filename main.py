@@ -18,6 +18,10 @@ class User(ndb.Model):
     location = ndb.GeoPtProperty()
     profile = ndb.BlobProperty()
 
+class Message(ndb.Model):
+    content = ndb.TextProperty()
+    user = ndb.KeyProperty()
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
          user =users.get_current_user()
@@ -40,12 +44,6 @@ class ProfileHandler(webapp2.RequestHandler):
     def get(self):
         template = env.get_template('profile.html')
         self.response.write(template.render())
-
-
-
-class Message(ndb.Model):
-    content = ndb.TextProperty()
-    user = ndb.KeyProperty()
 
 class MessagesHandler(webapp2.RequestHandler):
     def get(self):
@@ -108,23 +106,11 @@ class UserInfoHandler(webapp2.RequestHandler):
         user = users.get_current_user()
 
         user_entity = User.query(User.user_property == user).get()
-        user_entity.firstname = firstname
-        user_entity.put()
-
-        user_entity = User.query(User.user_property == user).get()
-        user_entity.lastname = lastname
-        user_entity.put()
-
-        user_entity = User.query(User.user_property == user).get()
-        user_entity.school = school
-        user_entity.put()
-
-        user_entity = User.query(User.user_property == user).get()
-        user_entity.age = age
-        user_entity.put()
-
-        user_entity = User.query(User.user_property == user).get()
-        user_entity.profile = profile
+        user_entity = User(firstname = firstname,
+                       lastname = lastname,
+                       school = school,
+                       age = age,
+                       profile = profile)
         user_entity.put()
 
 app = webapp2.WSGIApplication([
