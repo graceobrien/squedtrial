@@ -102,7 +102,16 @@ class UserInfoHandler(webapp2.RequestHandler):
         school = self.request.get("school")
         age = self.request.get("age")
         profile = self.request.get("profile")
-        
+        user = users.get_current_user()
+
+        user_entity = User.query(User.user_property == user).get()
+        user_entity = User(firstname = firstname,
+                       lastname = lastname,
+                       school = school,
+                       age = age,
+                       profile = profile)
+        user_entity.put()
+
 app = webapp2.WSGIApplication([
     ('/home', MainHandler),
     ('/profile', ProfileHandler),
