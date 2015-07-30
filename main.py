@@ -20,7 +20,7 @@ class User(ndb.Model):
     profile = ndb.BlobProperty(default=None)
     background = ndb.BlobProperty()
     bio = ndb.TextProperty()
-
+    
 class Message(ndb.Model):
     # post = ndb.KeyProperty(kind = User.user_property)
     content = ndb.TextProperty()
@@ -106,6 +106,7 @@ class ProfileHandler(webapp2.RequestHandler):
                      'bio': user_entity.bio}
 
         self.response.write(template.render(variables))
+
 class MessagesHandler(webapp2.RequestHandler):
     def get(self):
         post = Message.query(Message.user == ndb.Key(User, users.get_current_user().user_id())).fetch()
@@ -147,18 +148,16 @@ class MapHandler(webapp2.RequestHandler):
 
 class SaveLocHandler(webapp2.RequestHandler):
     def post (self):
+        latitude = self.request.POST.get("latitude")
+        longitude = self.request.POST.get("longitude")
+        user = users.get_current_user()
+        user_entity = User.query(User.user_property == user).get()
+        if latitude is None:
+            user_entity.latlng = None
+        else:
+            user_entity.latlng = ndb.GeoPt(latitude, longitude)
 
-                latitude = self.request.POST.get("latitude")
-                longitude = self.request.POST.get("longitude")
-                user = users.get_current_user()
-
-                user_entity = User.query(User.user_property == user).get()
-                if latitude is None:
-                    user_entity.latlng = None
-                else:
-                    user_entity.latlng = ndb.GeoPt(latitude, longitude)
-
-                user_entity.put()
+        user_entity.put()
 
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
@@ -169,32 +168,6 @@ class SignUpHandler(webapp2.RequestHandler):
     def get(self):
         template = env.get_template('signup.html')
         self.response.write(template.render())
-
-class UserInfoHandler(webapp2.RequestHandler):
-    def get(self):
-        template = env.get_template('userinfo.html')
-
-        self.response.write(template.render())
-
-    def post(self):
-        firstname = self.request.get("firstname")
-        lastname = self.request.get("lastname")
-        school = self.request.get("school")
-        age = self.request.get("age")
-        profile = self.request.get("profile")
-
-        user = users.get_current_user()
-
-        user_entity = User.query(User.user_property == user).get()
-        user_entity.firstname = firstname
-        user_entity.lastname = lastname
-        user_entity.school = school
-        user_entity.age = age
-        user_entity.profile = profile
-
-        user_entity.put()
-
-        self.redirect('/profile?user=' + user_entity.key.urlsafe())
 
 app = webapp2.WSGIApplication([
     # ('/', FormHandler),
