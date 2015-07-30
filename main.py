@@ -24,7 +24,11 @@ class User(ndb.Model):
 class Message(ndb.Model):
     # post = ndb.KeyProperty(kind = User.user_property)
     content = ndb.TextProperty()
-    user = ndb.KeyProperty()
+    # user = ndb.KeyProperty()
+
+    # class Redirect(webapp2.RequestHandler):
+    #     def post(self):
+    #         self.redirect('/home')
 
 # class FormHandler(webapp.RequestHandler):
 #   def post(self):
@@ -102,7 +106,6 @@ class ProfileHandler(webapp2.RequestHandler):
                      'bio': user_entity.bio}
 
         self.response.write(template.render(variables))
-
 class MessagesHandler(webapp2.RequestHandler):
     def get(self):
         post = Message.query(Message.user == ndb.Key(User, users.get_current_user().user_id())).fetch()
@@ -133,15 +136,29 @@ class PostHandler(webapp2.RequestHandler):
 
 class MapHandler(webapp2.RequestHandler):
     def get(self):
-        users = User.query(User.latlng != None).fetch()
         userlocations = []
-        for user in users :
+        for user in userlist :
             userloc = user.latlng
             userlocations.append(userloc)
         template = env.get_template('map.html')
         self.response.write(template.render(locationlist=userlocations))
-        user =users.get_current_user()
+        user = users.get_current_user()
         User.query(User.user_property == user).fetch()
+
+class SaveLocHandler(webapp2.RequestHandler):
+    def post (self):
+
+                latitude = self.request.POST.get("latitude")
+                longitude = self.request.POST.get("longitude")
+                user = users.get_current_user()
+
+                user_entity = User.query(User.user_property == user).get()
+                if latitude is None:
+                    user_entity.latlng = None
+                else:
+                    user_entity.latlng = ndb.GeoPt(latitude, longitude)
+
+                user_entity.put()
 
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
@@ -153,6 +170,43 @@ class SignUpHandler(webapp2.RequestHandler):
         template = env.get_template('signup.html')
         self.response.write(template.render())
 
+class UserInfoHandler(webapp2.RequestHandler):
+    def get(self):
+        # user_entity_key_urlsafe = self.request.get('key')
+        # user_entity_key = ndb.Key(urlsafe = user_entity_key_urlsafe)
+        # user_entity = user_entity_key.get()
+        #
+        # \User.query( ).fetch()
+
+        # variables = {'firstname': firstname,
+        #              'lastname' : lastname,
+        #              'age': age,
+        #              'school': school}
+
+        template = env.get_template('userinfo.html')
+
+        self.response.write(template.render())
+
+    def post(self):
+        firstname = self.request.get("firstname")
+        lastname = self.request.get("lastname")
+        school = self.request.get("school")
+        age = self.request.get("age")
+        profile = self.request.get("profile")
+
+        user = users.get_current_user()
+
+        user_entity = User.query(User.user_property == user).get()
+        user_entity.firstname = firstname
+        user_entity.lastname = lastname
+        user_entity.school = school
+        user_entity.age = age
+        user_entity.profile = profile
+
+        user_entity.put()
+
+        self.redirect('/profile?user=' + user_entity.key.urlsafe())
+
 app = webapp2.WSGIApplication([
     # ('/', FormHandler),
     ('/home', MainHandler),
@@ -163,5 +217,6 @@ app = webapp2.WSGIApplication([
     ('/post', PostHandler),
     ('/login', LoginHandler),
     ('/signup', SignUpHandler),
-    ('/userinfo', UserInfoHandler)
+    ('/userinfo', UserInfoHandler),
+    ('/saveloc', SaveLocHandler),
 ], debug=True)

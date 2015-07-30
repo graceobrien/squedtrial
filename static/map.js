@@ -80,17 +80,17 @@ function adddots () {
 		 				"name": "Something"}
 		 				 });
 		 				map.data.addListener('click', function(event) {
-		 						window.location = "/profile"
+		 						window.location = "/profile?user=" + user_entity_key_urlsafe()
 				});
 	   }
 }
 
-
+var i;
 
 function userdot() {
 
 	if (on == false) {
-				var i = map.data.addGeoJson({
+				i = map.data.addGeoJson({
 			  "type": "Feature",
 			  "geometry": {
 			  "type": "Point",
@@ -102,23 +102,18 @@ function userdot() {
 				map.data.addListener('click', function(event) {
 				    window.location = "/profile?key=" + user_entity.key.urlsafe()
 				});
+
+			$.post('/saveloc', {latitude:latitude, longitude:longitude}, function (data){console.log(data)})
 				on = true;
 
-
-				console.log(longitude)
-				console.log(latitude)
 		}
-
 		else {
 		//set location to none
 		//take them out of database
+		console.log(map.data)
+		map.data.remove(i[0]);
+		$.post('/saveloc', {}, function (data){console.log(data)})
 			 on = false;
 			 //set location to none
 	}
 }
-
-// function saveUserLoc (longitude, latitude, key) {
-// 	 //put in the location to data store using the key
-// 	 //need to put in the longitude and latitude
-//
-// }
