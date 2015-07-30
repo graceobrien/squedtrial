@@ -16,8 +16,7 @@ class User(ndb.Model):
     age = ndb.TextProperty()
     subject = ndb.StringProperty()
     latlng = ndb.GeoPtProperty()
-    profile = ndb.BlobProperty()
-    background = ndb.BlobProperty()
+    profile = ndb.BlobProperty(default = None)
     bio = ndb.TextProperty()
 
 class Message(ndb.Model):
@@ -40,27 +39,30 @@ class MainHandler(webapp2.RequestHandler):
          if user is None:
              login_url = users.create_login_url('/userinfo')
              template_var["login"] = login_url
+            #  if len(User.query(User.user_property == user).fetch()) == 0:
+
+
          else:
              logout_url = users.create_logout_url('/home')
              self.response.write('Welcome %s!' % user.email())
              self.response.write('<a href = "%s"> Log Out </a>' % logout_url)
-             if len(User.query(User.user_property == user).fetch()) == 0:
-                new_user = User(user_property = user)
-                new_user.put()
+
 
          template = env.get_template('home.html')
          self.response.write(template.render(template_var))
 
 class UserInfoHandler(webapp2.RequestHandler):
     def get(self):
-        user = users.get_current_user()
-        user_info= User.query(User.user_property == user).get()
 
-        if user_info:
-            self.redirect(users.create_login_url('/profile?user=' + user_info.key.urlsafe()))
+        user = users.get_current_user()
+        if len(User.query(User.user_property == user).fetch()) == 0:
+           new_user = User(user_property = user)
+           new_user.put()
         else:
-            template = env.get_template('userinfo.html')
-            self.response.write(template.render())
+            user_info= User.query(User.user_property == user).get()
+            self.redirect(users.create_login_url('/profile?user=' + user_info.key.urlsafe()))
+        template = env.get_template('userinfo.html')
+        self.response.write(template.render())
 
     def post(self):
         firstname = self.request.get("firstname")
@@ -69,9 +71,12 @@ class UserInfoHandler(webapp2.RequestHandler):
         age = self.request.get("age")
         profile = self.request.get("profile")
 
+        # Get the currently logged in user
         user = users.get_current_user()
 
+        # Try to get the User entity corresponding to the logged in user
         user_entity = User.query(User.user_property == user).get()
+
         user_entity.firstname = firstname
         user_entity.lastname = lastname
         user_entity.school = school
@@ -94,7 +99,8 @@ class ProfileHandler(webapp2.RequestHandler):
         variables = {'firstname': user_entity.firstname,
                      'lastname' : user_entity.lastname,
                      'age': user_entity.age,
-                     'school': user_entity.school}
+                     'school': user_entity.school,
+                     'key': user_entity_key_urlsafe}
 
         self.response.write(template.render(variables))
 
@@ -148,47 +154,46 @@ class SaveLocHandler(webapp2.RequestHandler):
             user_entity.latlng = None
         else:
             user_entity.latlng = ndb.GeoPt(latitude, longitude)
+            latitude = self.request.POST.get("latitude")
+            longitude = self.request.POST.get("longitude")
+            user = users.get_current_user()
+            user_entity = User.query(User.user_property == user).get()
+            if latitude is None:
+                user_entity.latlng = None
+            else:
+                user_entity.latlng = ndb.GeoPt(latitude, longitude)
 
-                latitude = self.request.POST.get("latitude")
-                longitude = self.request.POST.get("longitude")
-                user = users.get_current_user()
-                user_entity = User.query(User.user_property == user).get()
-                if latitude is None:
-                    user_entity.latlng = None
-                else:
-                    user_entity.latlng = ndb.GeoPt(latitude, longitude)
-
-                user_entity.put()
+            user_entity.put()
 
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
         template = env.get_template('login.html')
         self.response.write(template.render())
 
-class SignUpHandler(webapp2.RequestHandler):
-    def get(self):
-        template = env.get_template('signup.html')
-        self.response.write(template.render())
-
-    def post(self):
-        firstname = self.request.get("firstname")
-        lastname = self.request.get("lastname")
-        school = self.request.get("school")
-        age = self.request.get("age")
-        profile = self.request.get("profile")
-
-        user = users.get_current_user()
-
-        user_entity = User.query(User.user_property == user).get()
-        user_entity.firstname = firstname
-        user_entity.lastname = lastname
-        user_entity.school = school
-        user_entity.age = age
-        user_entity.profile = profile
-
-        user_entity.put()
-
-        self.redirect('/profile?user=' + user_entity.key.urlsafe())
+# class SignUpHandler(webapp2.RequestHandler):
+#     def get(self):
+#         template = env.get_template('signup.html')
+#         self.response.write(template.render())
+#
+#     def post(self):
+#         firstname = self.request.get("firstname")
+#         lastname = self.request.get("lastname")
+#         school = self.request.get("school")
+#         age = self.request.get("age")
+#         profile = self.request.get("profile")
+#
+#         user = users.get_current_user()
+#
+#         user_entity = User.query(User.user_property == user).get()
+#         user_entity.firstname = firstname
+#         user_entity.lastname = lastname
+#         user_entity.school = school
+#         user_entity.age = age
+#         user_entity.profile = profile
+#
+#         user_entity.put()
+#
+#         self.redirect('/profile?user=' + user_entity.key.urlsafe())
 
 
 
@@ -200,7 +205,7 @@ app = webapp2.WSGIApplication([
     ('/message', MessagesHandler),
     ('/post', PostHandler),
     ('/login', LoginHandler),
-    ('/signup', SignUpHandler),
+    # ('/signup', SignUpHandler),
     ('/userinfo', UserInfoHandler),
     ('/saveloc', SaveLocHandler),
 ], debug=True)
