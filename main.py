@@ -61,7 +61,7 @@ class ProfileHandler(webapp2.RequestHandler):
 
 class MessagesHandler(webapp2.RequestHandler):
     def get(self):
-        post = Message.query(Message.user == ndb.Key(User, users.get_current_user().user_id())).fetch()
+        # post = Message.query(Message.user == ndb.Key(User, users.get_current_user().user_id())).fetch()
         variables = {'posts': post}
         template = env.get_template('messages.html')
         self.response.write(template.render(variables))
@@ -75,11 +75,11 @@ class MessagesHandler(webapp2.RequestHandler):
 
 class PostHandler(webapp2.RequestHandler):
     def get(self):
-        urlsafe_post_key = self.request.get('key')
-        post_key = ndb.Key(urlsafe = urlsafe_post_key)
-        post = post_key.get()
+        # urlsafe_post_key = self.request.get('key')
+        # post_key = ndb.Key(urlsafe = urlsafe_post_key)
+        # post = post_key.get()
         template = env.get_template('messages.html')
-        variables = {'post': post}
+        # variables = {'post': post}
         self.response.write(template.render(variables))
     def post(self):
         urlsafe_post_key = self.request.get('post_key')
