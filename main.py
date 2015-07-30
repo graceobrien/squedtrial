@@ -20,7 +20,7 @@ class User(ndb.Model):
     profile = ndb.BlobProperty(default=None)
     background = ndb.BlobProperty()
     bio = ndb.TextProperty()
-    
+
 class Message(ndb.Model):
     # post = ndb.KeyProperty(kind = User.user_property)
     content = ndb.TextProperty()
@@ -103,7 +103,8 @@ class ProfileHandler(webapp2.RequestHandler):
                      'lastname' : user_entity.lastname,
                      'age': user_entity.age,
                      'school': user_entity.school,
-                     'bio': user_entity.bio}
+                     'bio': user_entity.bio,
+                     'key': user_entity_key_urlsafe}
 
         self.response.write(template.render(variables))
 
@@ -137,14 +138,18 @@ class PostHandler(webapp2.RequestHandler):
 
 class MapHandler(webapp2.RequestHandler):
     def get(self):
+        user_entity_key_urlsafe = self.request.get('user')
+        variables = {'key': user_entity_key_urlsafe}
+        userlist = User.query(User.latlng != None).fetch()
         userlocations = []
-        for user in userlist :
+        for user in userlist:
             userloc = user.latlng
             userlocations.append(userloc)
         template = env.get_template('map.html')
         self.response.write(template.render(locationlist=userlocations))
         user = users.get_current_user()
         User.query(User.user_property == user).fetch()
+
 
 class SaveLocHandler(webapp2.RequestHandler):
     def post (self):
