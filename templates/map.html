@@ -1,10 +1,22 @@
 <!DOCTYPE html>
+<meta id = "location" data-name
+ var locationlist = {{locationlist|safe}}
+ </meta>
 <html lang= "en">
   <head>
     <title> Squed Map </title>
     <link href="/static/map.css" rel= "stylesheet">
      <script src="https://maps.googleapis.com/maps/api/js"></script>
      <script src="/static/map.js"></script>
+     <script>
+
+               var locations = [
+                 {% for loc in locationlist %}
+                    {'lon': {{loc.lon}}, 'lat':{{loc.lat}}},
+                 {% endfor %}
+               ];
+
+     </script>
   </head>
       <body>
 

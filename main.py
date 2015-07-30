@@ -2,6 +2,7 @@ from google.appengine.api import urlfetch
 from google.appengine.api import users
 import webapp2
 import jinja2
+import json
 from google.appengine.ext import ndb
 import datetime
 
@@ -73,8 +74,14 @@ class PostHandler(webapp2.RequestHandler):
 
 class MapHandler(webapp2.RequestHandler):
     def get(self):
+
+        users = User.query(User.latlng != None).fetch()
+        userlocations = []
+        for user in users :
+            userloc = user.latlng
+            userlocations.append(userloc)
         template = env.get_template('map.html')
-        self.response.write(template.render())
+        self.response.write(template.render(locationlist=userlocations))
 
 class LoginHandler(webapp2.RequestHandler):
     def get(self):

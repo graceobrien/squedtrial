@@ -61,12 +61,35 @@ function initialize(position) {
     mapTypeId: google.maps.MapTypeId.ROADMAP
   }
   map = new google.maps.Map(mapCanvas, mapOptions);
+	google.maps.event.addListenerOnce(map, 'idle', adddots)
 
 }
 google.maps.event.addDomListener(window, 'load', function (event) { navigator.geolocation.getCurrentPosition(initialize, displayError) } );
 
 
+
+function adddots () {
+	for (i= 0; i<locations.length ; i++) {
+			loc = locations[i];
+						map.data.addGeoJson({
+						"type": "Feature",
+		 				"geometry": {
+		 				"type": "Point",
+		 				"coordinates": [loc.lon, loc.lat]},
+		 				"properties": {
+		 				"name": "Something"}
+		 				 });
+		 				map.data.addListener('click', function(event) {
+		 						window.location = "/profile"
+				});
+	   }
+}
+
+
+
 function userdot() {
+		console.log (longitude)
+			console.log (latitude)
 	if (on == false) {
 				var i = map.data.addGeoJson({
 			  "type": "Feature",
@@ -76,13 +99,19 @@ function userdot() {
 			  "properties": {
 			  "name": "Something"}
 			   });
+				//set location in database
 				map.data.addListener('click', function(event) {
 				    window.location = "/profile"
 				});
 				on = true;
+				// $.post("userlocation",{
+				// 		//return latlng = int(latitude + "," +longitude)
+				// }),
 		}
+
 		else {
 		i.setMap(null)
 			 on = false;
+			 //set location to none
 	}
 }
