@@ -24,7 +24,7 @@ class User(ndb.Model):
 class Message(ndb.Model):
     # post = ndb.KeyProperty(kind = User.user_property)
     content = ndb.TextProperty()
-    # user = ndb.KeyProperty()
+    user = ndb.KeyProperty()
 
     # class Redirect(webapp2.RequestHandler):
     #     def post(self):
@@ -172,17 +172,6 @@ class SignUpHandler(webapp2.RequestHandler):
 
 class UserInfoHandler(webapp2.RequestHandler):
     def get(self):
-        # user_entity_key_urlsafe = self.request.get('key')
-        # user_entity_key = ndb.Key(urlsafe = user_entity_key_urlsafe)
-        # user_entity = user_entity_key.get()
-        #
-        # \User.query( ).fetch()
-
-        # variables = {'firstname': firstname,
-        #              'lastname' : lastname,
-        #              'age': age,
-        #              'school': school}
-
         template = env.get_template('userinfo.html')
 
         self.response.write(template.render())
