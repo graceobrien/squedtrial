@@ -80,7 +80,7 @@ function adddots () {
 		 				"name": "Something"}
 		 				 });
 		 				map.data.addListener('click', function(event) {
-		 						window.location = "/profile?user=" + user_entity_key_urlsafe()
+		 						window.location = "/profile" + escape()  + "?user=" + user_entity_key.get()
 				});
 	   }
 }
