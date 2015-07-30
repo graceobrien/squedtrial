@@ -69,7 +69,6 @@ class UserInfoHandler(webapp2.RequestHandler):
 
         user_entity.put()
 
-
         self.redirect('/profile?user=' + user_entity.key.urlsafe())
 
 
@@ -93,7 +92,7 @@ class MessagesHandler(webapp2.RequestHandler):
         post = Message.query(Message.user == ndb.Key(User, users.get_current_user().user_id())).fetch()
         variables = {'posts': post}
         template = env.get_template('messages.html')
-        self.response.write(template.render(variables))
+        self.response.write(template.render())
 
     def post(self):
         content = self.request.get('content')
@@ -126,6 +125,8 @@ class MapHandler(webapp2.RequestHandler):
             userlocations.append(userloc)
         template = env.get_template('map.html')
         self.response.write(template.render(locationlist=userlocations))
+        user =users.get_current_user()
+        User.query(User.user_property == user).fetch()
 
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
