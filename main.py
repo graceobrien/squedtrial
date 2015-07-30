@@ -5,7 +5,6 @@ import jinja2
 import json
 from google.appengine.ext import ndb
 import datetime
-import mimetypes
 
 env = jinja2.Environment(loader = jinja2.FileSystemLoader('templates'))
 
@@ -17,23 +16,21 @@ class User(ndb.Model):
     age = ndb.TextProperty()
     subject = ndb.StringProperty()
     latlng = ndb.GeoPtProperty()
-    profile = ndb.BlobProperty(default=None)
+    profile = ndb.BlobProperty()
     background = ndb.BlobProperty()
-    bio = ndb.TextProperty()
 
 class Message(ndb.Model):
     # post = ndb.KeyProperty(kind = User.user_property)
     content = ndb.TextProperty()
-    user = ndb.KeyProperty()
+    # user = ndb.KeyProperty()
 
     # class Redirect(webapp2.RequestHandler):
     #     def post(self):
     #         self.redirect('/home')
 
-# class FormHandler(webapp.RequestHandler):
-#   def post(self):
-#     if processFormData(self.request):
-#       self.redirect("http://squednetwork.appspot.com/home")
+# class Redirect(webapp2.RequestHandler):
+    #     def post(self):
+    #         self.redirect('/home')
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -64,7 +61,6 @@ class UserInfoHandler(webapp2.RequestHandler):
         school = self.request.get("school")
         age = self.request.get("age")
         profile = self.request.get("profile")
-        bio = self.request.get("bio")
 
         user = users.get_current_user()
 
@@ -73,24 +69,13 @@ class UserInfoHandler(webapp2.RequestHandler):
         user_entity.lastname = lastname
         user_entity.school = school
         user_entity.age = age
-        user_entity.bio = bio
+        user_entity.profile = profile
 
         user_entity.put()
 
         self.redirect('/profile?user=' + user_entity.key.urlsafe())
 
-# class ImageHandler(webapp2.RequestHandler):
-#     def get(self):
-#         key_id_urlsafe = self.request.get("user")
-#         profile_key = ndb.Key(urlsafe = key_id_urlsafe)
-#         profile = profile_key.get()
-#
-#         if profile and key_id_urlsafe:
-#             self.response.headers['Content-Type'] = "image/jpegs"
-#             self.response.out.write(profile.image)
-#
-#         else:
-#             self.redirect('/static/noimage.jpg')
+
 
 class ProfileHandler(webapp2.RequestHandler):
     def get(self):
@@ -102,10 +87,10 @@ class ProfileHandler(webapp2.RequestHandler):
         variables = {'firstname': user_entity.firstname,
                      'lastname' : user_entity.lastname,
                      'age': user_entity.age,
-                     'school': user_entity.school,
-                     'bio': user_entity.bio}
+                     'school': user_entity.school}
 
         self.response.write(template.render(variables))
+
 class MessagesHandler(webapp2.RequestHandler):
     def get(self):
         post = Message.query(Message.user == ndb.Key(User, users.get_current_user().user_id())).fetch()
@@ -136,6 +121,7 @@ class PostHandler(webapp2.RequestHandler):
 
 class MapHandler(webapp2.RequestHandler):
     def get(self):
+        userlist = User.query(User.latlng != None).fetch()
         userlocations = []
         for user in userlist :
             userloc = user.latlng
@@ -151,7 +137,6 @@ class SaveLocHandler(webapp2.RequestHandler):
                 latitude = self.request.POST.get("latitude")
                 longitude = self.request.POST.get("longitude")
                 user = users.get_current_user()
-
                 user_entity = User.query(User.user_property == user).get()
                 if latitude is None:
                     user_entity.latlng = None
@@ -170,11 +155,22 @@ class SignUpHandler(webapp2.RequestHandler):
         template = env.get_template('signup.html')
         self.response.write(template.render())
 
-class UserInfoHandler(webapp2.RequestHandler):
-    def get(self):
-        template = env.get_template('userinfo.html')
-
-        self.response.write(template.render())
+# class UserInfoHandler(webapp2.RequestHandler):
+#     def get(self):
+#         # user_entity_key_urlsafe = self.request.get('key')
+#         # user_entity_key = ndb.Key(urlsafe = user_entity_key_urlsafe)
+#         # user_entity = user_entity_key.get()
+#         #
+#         # \User.query( ).fetch()
+#
+#         # variables = {'firstname': firstname,
+#         #              'lastname' : lastname,
+#         #              'age': age,
+#         #              'school': school}
+#
+#         template = env.get_template('userinfo.html')
+#
+#         self.response.write(template.render())
 
     def post(self):
         firstname = self.request.get("firstname")
@@ -197,11 +193,10 @@ class UserInfoHandler(webapp2.RequestHandler):
         self.redirect('/profile?user=' + user_entity.key.urlsafe())
 
 app = webapp2.WSGIApplication([
-    # ('/', FormHandler),
+    # ('/', Redirect),
     ('/home', MainHandler),
     ('/profile', ProfileHandler),
     ('/map', MapHandler),
-    # ('/images', ImageHandler),
     ('/message', MessagesHandler),
     ('/post', PostHandler),
     ('/login', LoginHandler),

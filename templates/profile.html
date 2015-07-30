@@ -16,24 +16,26 @@
                       <input class ="search" type="text" placeholder="Search..." required>
                       <input class = "button" type="button" value="Search">
               </form> </div>
-       <div class = "D"> <a href="/map" id= map ><img src = "/static/images/map.png"></a></div>
-       <div class = "E"> <a href="/message" id= map ><img src = "/static/images/message.png"></a></div>
-       <div class = "F"> <a href="/profile" id = profile><img src = "/static/images/imgres.png"></a></div>
+       <div class = "D"> <a href="/map?user={{}}" id= map ><img src = "/static/images/map.png"></a></div>
+       <div class = "E"> <a href="/message?user={{}}" id= map ><img src = "/static/images/message.png"></a></div>
+       <div class = "F"> <a href="/profile?user={{}}" id = profile><img src = "/static/images/imgres.png"></a></div>
     </header>
 
 
     <div class="block">
       <div class="user">
-        <img src="{{profile}}" class="avatar" alt="" />
+
+        <img src={{profile}} class="avatar" alt="" />
+
 
         <div class="usr-info">
           <div class="rHa">
           <div class="Yia">
           <div class="gZa">
-          <div class="rna KXa Xia" guidedhelpid="profile_name">{{User.firstname}} {{User.lastname}}</div></div>
+          <div class="rna KXa Xia" guidedhelpid="profile_name">{{firstname}} {{lastname}}</div></div>
           <div class="EXa Plb"></div></div>
           <div class="Yia Frc VQc"><div class="Nyb">
-          <div class="Ny"><span class="J9a">Studying at </span><span class="K9a">{{User.school}}</span></div><div class="wyb FVb">
+          <div class="Ny"><span class="J9a">Studying at </span><span class="K9a">{{school}}</span></div><div class="wyb FVb">
           </div></div></div></div>
 
           <div class="circle-button">

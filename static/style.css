@@ -7,7 +7,7 @@ body {
   background-color:#F5F5F5;
   color: #212121;
   margin: 0px;
-  background: url('https://d3ui957tjb5bqd.cloudfront.net/images/screenshots/products/29/294/294444/1-f.jpg?1420807091');
+  background: url('https://d3ui957tjb5bqd.cloudfront.net/images/screenshots/products/31/317/317334/1-o.jpg?1422077913');
 }
 
 header {
@@ -119,7 +119,7 @@ box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.33);
   font-family: 'Lato', sans-serif;
   position:relative;
   float: left;
-  width: 100%;
+  width: 200%;
   height:auto;
   padding: 10px 0 15px 0;
   border-bottom: 1px solid #eee;
@@ -148,7 +148,7 @@ box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.33);
 }
 .social-login a:first-child{
   font-family: 'Lato', sans-serif;
-  background-color: #49639F;
+  background-color: #fff;
 }
 .social-login a:last-child{
   font-family: 'Lato', sans-serif;
