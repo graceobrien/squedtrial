@@ -20,7 +20,7 @@ class User(ndb.Model):
     bio = ndb.TextProperty()
 
 class Message(ndb.Model):
-   # post = ndb.KeyProperty(kind = User.user_property)
+    post = ndb.KeyProperty()
     content = ndb.TextProperty()
     user = ndb.KeyProperty()
 
