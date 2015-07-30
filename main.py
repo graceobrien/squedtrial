@@ -47,8 +47,15 @@ class MainHandler(webapp2.RequestHandler):
 
 class ProfileHandler(webapp2.RequestHandler):
     def get(self):
-        # User.query(User.user_entity == ).fetch
+        User.query(User.user_property == ndb.Key(User, users.get_current_user().userid())).fetch()
+
+        variables = {"firstname": firstname,
+                      "lastname": lastname,
+                      "age": age,
+                      "school": school}
+
         template = env.get_template('profile.html')
+
         self.response.write(template.render())
 
 class MessagesHandler(webapp2.RequestHandler):
@@ -102,14 +109,14 @@ class UserInfoHandler(webapp2.RequestHandler):
         #
         # \User.query( ).fetch()
 
-        variables = {'firstname': firstname,
-                     'lastname' : lastname,
-                     'age': age,
-                     'school': school}
+        # variables = {'firstname': firstname,
+        #              'lastname' : lastname,
+        #              'age': age,
+        #              'school': school}
 
         template = env.get_template('userinfo.html')
 
-        self.response.write(template.render(variables))
+        self.response.write(template.render())
 
     def post(self):
         firstname = self.request.get("firstname")
