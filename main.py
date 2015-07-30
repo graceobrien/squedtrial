@@ -48,12 +48,12 @@ class MainHandler(webapp2.RequestHandler):
 
 class ProfileHandler(webapp2.RequestHandler):
     def get(self):
-        User.query(User.user_property == ndb.Key(User, users.get_current_user().userid())).fetch()
+        # User.query(User.user_property == ndb.Key(User, users.get_current_user().userid())).fetch()
 
-        variables = {"firstname": firstname,
-                      "lastname": lastname,
-                      "age": age,
-                      "school": school}
+        # variables = {"firstname": firstname,
+        #               "lastname": lastname,
+        #               "age": age,
+        #               "school": school}
 
         template = env.get_template('profile.html')
 
@@ -61,10 +61,10 @@ class ProfileHandler(webapp2.RequestHandler):
 
 class MessagesHandler(webapp2.RequestHandler):
     def get(self):
-        # post = Message.query(Message.user == ndb.Key(User, users.get_current_user().user_id())).fetch()
+        post = Message.query(Message.user == ndb.Key(User, users.get_current_user().user_id())).fetch()
         variables = {'posts': post}
         template = env.get_template('messages.html')
-        self.response.write(template.render(variables))
+        self.response.write(template.render())
 
     def post(self):
         content = self.request.get('content')
@@ -97,6 +97,8 @@ class MapHandler(webapp2.RequestHandler):
             userlocations.append(userloc)
         template = env.get_template('map.html')
         self.response.write(template.render(locationlist=userlocations))
+        user =users.get_current_user()
+        User.query(User.user_property == user).fetch()
 
 class LoginHandler(webapp2.RequestHandler):
     def get(self):

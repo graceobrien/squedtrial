@@ -88,8 +88,7 @@ function adddots () {
 
 
 function userdot() {
-		console.log (longitude)
-			console.log (latitude)
+
 	if (on == false) {
 				var i = map.data.addGeoJson({
 			  "type": "Feature",
@@ -101,17 +100,25 @@ function userdot() {
 			   });
 				//set location in database
 				map.data.addListener('click', function(event) {
-				    window.location = "/profile"
+				    window.location = "/profile?key=" + user_entity.key.urlsafe()
 				});
 				on = true;
-				// $.post("userlocation",{
-				// 		//return latlng = int(latitude + "," +longitude)
-				// }),
+
+
+				console.log(longitude)
+				console.log(latitude)
 		}
 
 		else {
-		i.setMap(null)
+		//set location to none
+		//take them out of database
 			 on = false;
 			 //set location to none
 	}
 }
+
+// function saveUserLoc (longitude, latitude, key) {
+// 	 //put in the location to data store using the key
+// 	 //need to put in the longitude and latitude
+//
+// }
