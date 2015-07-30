@@ -106,10 +106,14 @@ class ProfileHandler(webapp2.RequestHandler):
 
 class MessagesHandler(webapp2.RequestHandler):
     def get(self):
+        user_entity_key_urlsafe = self.request.get('user')
+        user_entity_key = ndb.Key(urlsafe = user_entity_key_urlsafe)
+        user_entity = user_entity_key.get()
         post = Message.query(Message.user == ndb.Key(User, users.get_current_user().user_id())).fetch()
-        variables = {'posts': post}
+        variables = {'posts': post,
+                     'key': user_entity_key_urlsafe}
         template = env.get_template('messages.html')
-        self.response.write(template.render())
+        self.response.write(template.render(variables))
 
     def post(self):
         content = self.request.get('content')
@@ -134,13 +138,19 @@ class PostHandler(webapp2.RequestHandler):
 
 class MapHandler(webapp2.RequestHandler):
     def get(self):
+        user_entity_key_urlsafe = self.request.get('user')
+        user_entity_key = ndb.Key(urlsafe = user_entity_key_urlsafe)
+        user_entity = user_entity_key.get()
+
+        variables = {"key": user_entity_key_urlsafe}
+
         userlist = User.query(User.latlng != None).fetch()
         userlocations = []
         for user in userlist :
             userloc = user.latlng
             userlocations.append(userloc)
         template = env.get_template('map.html')
-        self.response.write(template.render(locationlist=userlocations))
+        self.response.write(template.render(locationlist=userlocations, user = variables))
         user = users.get_current_user()
         User.query(User.user_property == user).fetch()
 
