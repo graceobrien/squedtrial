@@ -96,7 +96,6 @@ class ProfileHandler(webapp2.RequestHandler):
         user_entity_key_urlsafe = self.request.get('user')
         user_entity_key = ndb.Key(urlsafe=user_entity_key_urlsafe)
         user_entity = user_entity_key.get()
-
         variables = {'firstname': user_entity.firstname,
                      'lastname' : user_entity.lastname,
                      'age': user_entity.age,
@@ -140,7 +139,7 @@ class PostHandler(webapp2.RequestHandler):
         urlsafe_post_key = self.request.get('post_key')
         content = self.request.get('content')
         post_key = ndb.Key(urlsafe = urlsafe_post_key)
-        return self.redirect('/profile?user=%s' & self.request.get('user'))
+        return self.redirect('/profile?user=%s' % self.request.get('user'))
 class MapHandler(webapp2.RequestHandler):
     def get(self):
         current_user = users.get_current_user()
@@ -153,7 +152,7 @@ class MapHandler(webapp2.RequestHandler):
             userloc = user.latlng
             userlocations.append(userloc)
         template = env.get_template('map.html')
-        self.response.write(template.render(locationlist=userlocations, user='variables'))
+        self.response.write(template.render(userlist=userlist, userkey=userkey))
         user = users.get_current_user()
         User.query(User.user_property == user).fetch()
 
@@ -163,8 +162,8 @@ class SaveLocHandler(webapp2.RequestHandler):
         longitude = self.request.POST.get("longitude")
 
         user = users.get_current_user()
-        hope = User.query(User.user_property == user).get()
-        key = hope.key
+        # hope = User.query(User.user_property == user).get()
+        # key = hope.key
         #key = self.request.POST.get('key')
 
         user_entity = User.query(User.user_property == user).get()

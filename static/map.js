@@ -80,15 +80,15 @@ function adddots () {
 		 				"name": "Something"}
 		 				 });
 		 				map.data.addListener('click', function(event) {
-		 						window.location = "/profile?user=" + loc.key
+		 						window.location = "/profile?user=" + loc.urlsafe_key
 				});
 	   }
 }
 
 var i;
 
-function userdot() {
-
+function userdot(key) {
+	console.log(key)
 	if (on == false) {
 				i = map.data.addGeoJson({
 			  "type": "Feature",
@@ -98,10 +98,10 @@ function userdot() {
 			  "properties": {
 			  "name": "Something"}
 			   });
-				keyme = $('#currentkey').value
+				// keyme = $('#currentkey').value
 				//set location in database
 				map.data.addListener('click', function(event) {
-				    window.location = "/profile?user=" + keyme
+				    window.location = "/profile?user=" + key
 				});
 
 			$.post('/saveloc', {latitude:latitude, longitude:longitude}, function (data){console.log(data)})
