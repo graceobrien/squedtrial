@@ -15,9 +15,38 @@ header {
     text-align: middle;
     height: 50px;
 }
+h1 {
+  color: white;
+  font-family: 'Lato', sans-serif;
+  font-weight: 100;
+  font-size: 14pt;
+
+}
 img {
   height: 50px;
 }
+
+form {
+    font-family: 'Lato', sans-serif;
+    font-size: 14pt;
+    width: 400px;
+}
+
+input, textarea {
+  background-color: #80DEEA;
+  outline-color: #fff;
+  width: 400px;
+}
+
+button {
+  font-family: 'Lato', sans-serif;
+  font-weight: 100;
+  font-size: 10pt;
+  background-color: #000;
+  color: #fff;
+  border-radius: 30%;
+}
+
 .A {
   float:left;
     width: 20%;
@@ -85,7 +114,7 @@ form {
 
 .block {
   padding-top: 50px;
-  height: 600px;
+  height: 300px;
   margin: 0 auto;
   width: 100%;
   background: url('https://d3ui957tjb5bqd.cloudfront.net/images/screenshots/products/31/317/317334/1-o.jpg?1422077913');
@@ -177,14 +206,15 @@ form {
 
 /*THIS IS NAME*/
 .Xia {
-  font-size: 35px;
-  color: white;
+  font-size: 40px;
+  font-weight: 700;
+  color: black;
 }
 
 /*THIS IS WHERE THEY ARE STUDYING*/
 .Ny,
 .followers {
-  font-size: 20px;
+  font-size: 24px;
   color: white;
   margin-bottom: 10px;
 }
@@ -209,12 +239,7 @@ form {
   }
 
 .bio {
-  font-size: 50px;
-  font-family: 'Lato', sans-serif;
-  font-weight: 100;
-}
-
-.message {
+  font-size: 30px;
   font-family: 'Lato', sans-serif;
   font-weight: 100;
 }

@@ -5,6 +5,7 @@ import jinja2
 import json
 from google.appengine.ext import ndb
 import datetime
+import logging
 
 env = jinja2.Environment(loader = jinja2.FileSystemLoader('templates'))
 
@@ -85,7 +86,7 @@ class UserInfoHandler(webapp2.RequestHandler):
 
         user_entity.put()
 
-        self.redirect('/profile?user=' + user_entity.key.urlsafe())
+        self.redirect('/profile?user=%s' % user_entity.key.urlsafe())
 
 
 
@@ -93,14 +94,13 @@ class ProfileHandler(webapp2.RequestHandler):
     def get(self):
         template = env.get_template('profile.html')
         user_entity_key_urlsafe = self.request.get('user')
-        user_entity_key = ndb.Key(urlsafe = user_entity_key_urlsafe)
+        user_entity_key = ndb.Key(urlsafe=user_entity_key_urlsafe)
         user_entity = user_entity_key.get()
 
         variables = {'firstname': user_entity.firstname,
                      'lastname' : user_entity.lastname,
                      'age': user_entity.age,
                      'school': user_entity.school,
-                     'bio': user_entity.bio,
                      'key': user_entity_key_urlsafe}
 
         self.response.write(template.render(variables))
@@ -109,17 +109,24 @@ class MessagesHandler(webapp2.RequestHandler):
     def get(self):
         user_entity_key_urlsafe = self.request.get('user')
         post = Message.query(Message.user == ndb.Key(User, users.get_current_user().user_id())).fetch()
-        variables = {'posts': post,
-                     'key': user_entity_key_urlsafe}
+        variables = {'posts': post}
         template = env.get_template('messages.html')
-        self.response.write(template.render(variables))
+        self.response.write(template.render())
 
     def post(self):
+        user = users.get_current_user()
+        hope = User.query(User.user_property == user).get()
+        userkey = hope.key
+
+        # userkey = ndb.Key(User, user.user_id())
+        user_entity_key_urlsafe = userkey.urlsafe()
+        logging.error(user_entity_key_urlsafe)
         content = self.request.get('content')
         post = Message(content = content,
-                        user = ndb.Key(User, users.get_current_user().user_id()))
+                        user = userkey )
         post.put()
-        return self.redirect('/message')
+        self.redirect('/profile?user=%s' % userkey.urlsafe())
+
 
 class PostHandler(webapp2.RequestHandler):
     def get(self):
@@ -133,32 +140,29 @@ class PostHandler(webapp2.RequestHandler):
         urlsafe_post_key = self.request.get('post_key')
         content = self.request.get('content')
         post_key = ndb.Key(urlsafe = urlsafe_post_key)
-        return self.redirect('/message?key=%s' & urlsafe_post_key)
-
+        return self.redirect('/profile?user=%s' & self.request.get('user'))
 class MapHandler(webapp2.RequestHandler):
     def get(self):
-        user_entity_key_urlsafe = self.request.get('user')
-        user_entity_key = ndb.Key(urlsafe = user_entity_key_urlsafe)
-        user_entity = user_entity_key.get()
-
-        variables = {'key': user_entity_key_urlsafe}
-
         userlist = User.query(User.latlng != None).fetch()
         userlocations = []
-        for user in userlist:
+        for user in userlist :
             userloc = user.latlng
             userlocations.append(userloc)
         template = env.get_template('map.html')
-        self.response.write(template.render(locationlist=userlocations, user = variables))
+        self.response.write(template.render(locationlist=userlocations))
         user = users.get_current_user()
         User.query(User.user_property == user).fetch()
-
 
 class SaveLocHandler(webapp2.RequestHandler):
     def post (self):
         latitude = self.request.POST.get("latitude")
         longitude = self.request.POST.get("longitude")
+
         user = users.get_current_user()
+        hope = User.query(User.user_property == user).get()
+        key = hope.key
+        #key = self.request.POST.get('key')
+
         user_entity = User.query(User.user_property == user).get()
         if latitude is None:
             user_entity.latlng = None

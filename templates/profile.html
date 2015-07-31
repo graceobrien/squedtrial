@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang= "en">
   <head>
@@ -34,11 +35,8 @@
           <div class="EXa Plb"></div></div>
           <div class="Yia Frc VQc"><div class="Nyb">
           <div class="Ny"><span class="J9a">Studying at </span><span class="K9a">{{school}}</span></div><div class="wyb FVb">
+          <div class="bio"> <h1> Classes: {{bio}} </h1></div>
           </div></div></div></div>
-
-          <div class="circle-button">
-            <div> <span class="icon-txt">Friend Me</span></div>
-          </div>
 
 
 
@@ -49,15 +47,12 @@
       <div class="nav">
       </div>
 
-      <div class ="bio">
-        <h1> My Classes: </h1>
-          <box> {{bio}} </box>
-      </div>
 
-    <form action = "/message" method = "post">
+    <form action="/message" method="post">
     Send {{firstname}} a Message:<br>
-    <textarea name = "content" rows = "3" cols = "60" placeholder = "Type a message!"></textarea><br>
+    <textarea name="content" rows="3" cols="60" placeholder="Type a message!"></textarea><br>
     <button> Send! </button>
+   </form>
 
 
       </body>
