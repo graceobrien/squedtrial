@@ -108,8 +108,6 @@ class ProfileHandler(webapp2.RequestHandler):
 class MessagesHandler(webapp2.RequestHandler):
     def get(self):
         user_entity_key_urlsafe = self.request.get('user')
-        user_entity_key = ndb.Key(urlsafe = user_entity_key_urlsafe)
-        user_entity = user_entity_key.get()
         post = Message.query(Message.user == ndb.Key(User, users.get_current_user().user_id())).fetch()
         variables = {'posts': post,
                      'key': user_entity_key_urlsafe}
