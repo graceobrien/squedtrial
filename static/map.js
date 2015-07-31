@@ -80,7 +80,7 @@ function adddots () {
 		 				"name": "Something"}
 		 				 });
 		 				map.data.addListener('click', function(event) {
-		 						window.location = "/profile" + escape()  + "?user=" + user_entity_key.get()
+		 						window.location = "/profile?user=" + loc.key
 				});
 	   }
 }
@@ -98,9 +98,10 @@ function userdot() {
 			  "properties": {
 			  "name": "Something"}
 			   });
+				keyme = $('#currentkey').value
 				//set location in database
 				map.data.addListener('click', function(event) {
-				    window.location = "/profile?key=" + user_entity.key.urlsafe()
+				    window.location = "/profile?user=" + keyme
 				});
 
 			$.post('/saveloc', {latitude:latitude, longitude:longitude}, function (data){console.log(data)})
