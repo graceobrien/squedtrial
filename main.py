@@ -143,13 +143,17 @@ class PostHandler(webapp2.RequestHandler):
         return self.redirect('/profile?user=%s' & self.request.get('user'))
 class MapHandler(webapp2.RequestHandler):
     def get(self):
+        current_user = users.get_current_user()
+        user = User.query(User.user_property == current_user).get()
+        userkey = user.key
+        variables = {'key': userkey}
         userlist = User.query(User.latlng != None).fetch()
         userlocations = []
         for user in userlist :
             userloc = user.latlng
             userlocations.append(userloc)
         template = env.get_template('map.html')
-        self.response.write(template.render(locationlist=userlocations))
+        self.response.write(template.render(locationlist=userlocations, user='variables'))
         user = users.get_current_user()
         User.query(User.user_property == user).fetch()
 
